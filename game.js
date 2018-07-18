@@ -6,7 +6,7 @@ const rl = readline.createInterface({
   prompt: '> '
 });
 
-var boardState = [
+var board = [
   [0, 0, 0],
   [0, 0, 0],
   [0, 0, 0]
@@ -15,31 +15,58 @@ var boardState = [
 console.log('Welcome to the new game!')
 var piecesPlaced = 0;
 
-// while (piecesPlaced < 10) {
-//   rl.pause();
 
-//   rl.question('Player 1: Where would you like to place your piece?', (answer) => {
-//     // update board state
-  
-//     // if player selects unavailable square, ask again
-  
-//     // check for winner
-
-//     rl.resume();
-//   });
-
-// }
+var currentPlayer = 'X';
 
 rl.prompt();
 rl.on('line', (input) => {
   // update board state
-
   // if player selects unavailable square ask again
+  var row = Number(input[0]);
+  var col = Number(input[1]);
+  if (row > 2 || col > 2 || board[row][col] !== 0) {
+    console.log('Not a valid move. Please try again.')
+  } else {
+    board[row][col] = currentPlayer;
+  }
+
 
   // check for winner
-
-
-  console.log('input: ', input)
+  if (checkWin(board, currentPlayer)) {
+    console.log(`Congratulations Player ${currentPlayer}! You're the winner.`)
+  } else {
+    currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+    console.log(`Your move Player ${currentPlayer}`);
+  }
 });
 
+var checkWin = (board, player) => {
+  return (checkRows(board, player) || checkCols(board, player) || checkDiag(board, player));
+}
 
+var checkRows = (board, player) => {
+  for (var x = 0; x < 3; x++) {
+    if (board[x][0] === player && board[x][1] === player && board[x][2] === player) {
+      return true;
+    }
+  }
+  return false;
+}
+
+var checkCols = (board, player) => {
+  for (var x = 0; x < 3; x++) {
+    if (board[0][x] === player && board[1][x] === player && board[2][x] === player) {
+      return true
+    }
+  }
+  return false;
+}
+
+var checkDiag = (board, player) => {
+  if (board[0][0] === player && board[1][1] === player && board[2][2] === player) {
+    return true;
+  } else if (board[0][2] === player && board[1][1] === player && board[2][0] === player){
+    return true;
+  } 
+  return false;
+}
