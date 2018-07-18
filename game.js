@@ -28,6 +28,7 @@ rl.on('line', (input) => {
     console.log('Not a valid move. Please try again.')
   } else {
     board[row][col] = currentPlayer;
+    renderBoard(board);
   }
 
 
@@ -69,4 +70,14 @@ var checkDiag = (board, player) => {
     return true;
   } 
   return false;
+}
+
+var renderBoard = (board) => {
+  console.log(`
+  ${board[0][0]} | ${board[0][1]} | ${board[0][2]} 
+  ---------- 
+  ${board[1][0]} | ${board[1][1]} | ${board[1][2]} 
+  ---------- 
+  ${board[2][0]} | ${board[2][1]} | ${board[2][2]} 
+  `);
 }
